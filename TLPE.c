@@ -1,16 +1,18 @@
 #include "TLDE.h"
 
-TLDE* insere(TLDE *l, int elem){
+void insere(TLD *l, int elem){
   TLDE *novo = (TLDE *) malloc(sizeof(TLDE));
   novo->ant = NULL;
-  novo->prox = l;
   novo->info = elem;
-  if(l) l->ant = novo;
-  return novo;
-}
+  novo->prox = l->prim;
+  l->tamanho = l->tamanho + 1
+  if (l->prim == NULL) l->ultimo = novo;
+  l->prim = novo;
+//  if(l) l->ant = novo;
+} 
 
-void imprime(TLDE *l){
-  TLDE *p = l;
+void imprime(TLD *l){
+  TLDE *p = l->prim;
   while(p){
     printf("% d ", p->info);
     p = p->prox;
@@ -43,5 +45,13 @@ TLDE* busca(TLDE *l, int elem){
     p = p->prox;
   } 
   return NULL;
+}
+
+TLD* inicializa(){
+  TLDE *novo = (TLSE*)malloc(sizeof(TLSED));
+  novo->prim = NULL;
+  novo->ultimo = NULL;
+  novo->tam = 0;
+  return novo;
 }
 

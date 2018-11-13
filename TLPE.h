@@ -6,9 +6,15 @@ typedef struct lde{
   struct lde *ant, *prox;
 } TLDE;
 
-TLDE* insere(TLDE *l, int elem);
-void imprime(TLDE *l);
+typedef struct ldes{
+  TLDE *prim;
+  int tam;
+  TLDE *ultimo;
+} TLD;
+
+TLD* inicializa(void);
+void insere(TLD *l, int elem);
+void imprime(TLD *l);
 void libera(TLDE *l);
 TLDE* retira(TLDE *l, int elem);
 TLDE* busca(TLDE *l, int elem);
-
