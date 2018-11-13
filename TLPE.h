@@ -13,8 +13,9 @@ typedef struct ldes{
 } TLD;
 
 TLD* inicializa(void);
-void insere(TLD *l, int elem);
+void insere_ini(TLD *l, int elem);
+void insere_fin(TLD *l, int elem);
 void imprime(TLD *l);
-void libera(TLDE *l);
-TLDE* retira(TLDE *l, int elem);
+void libera(TLD *l);
+void retira(TLD *l, int elem);
 TLDE* busca(TLDE *l, int elem);

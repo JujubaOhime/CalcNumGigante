@@ -1,15 +1,20 @@
 #include "TLDE.h"
 
-void insere(TLD *l, int elem){
+void insere_ini(TLD *l, int elem){
   TLDE *novo = (TLDE *) malloc(sizeof(TLDE));
   novo->ant = NULL;
   novo->info = elem;
   novo->prox = l->prim;
-  l->tamanho = l->tamanho + 1
+  l->tamanho++;
   if (l->prim == NULL) l->ultimo = novo;
   l->prim = novo;
 //  if(l) l->ant = novo;
 } 
+
+void insere_fin(TLD *l, int elem){
+  TLDE *novo = (TLDE *) malloc(sizeof(TLDE));
+
+}
 
 void imprime(TLD *l){
   TLDE *p = l->prim;
@@ -19,32 +24,34 @@ void imprime(TLD *l){
   } 
 }
 
-void libera(TLDE *l){
-  TLDE *p = l, *q;
+void libera(TLD *l){
+  TLDE *p = l->prim, *q;
   while(p){
     q = p;
     p = p->prox;
     free(q);
   } 
+  free(l);
 }
 
-TLDE* retira(TLDE *l, int elem){
+void retira(TLD *l, int elem){
   TLDE *p = busca(l, elem);
   if(!p) return l;
-  if(p == l) l = l->prox;
+  if(p == l){ 
+    l = l->prim;
+  }
   else p->ant->prox = p->prox;
   if(p->prox) p->prox->ant = p->ant;
   free(p);
-  return l;
 }
 
-TLDE* busca(TLDE *l, int elem){
-  TLDE *p = l;
-  while(p){
+TLDE* busca(TLD *l, int elem){
+  TLDE *p = l->prim;
+  while(p && p->info != elem){
     if(p->info == elem) return p;
     p = p->prox;
   } 
-  return NULL;
+  return p;
 }
 
 TLD* inicializa(){
