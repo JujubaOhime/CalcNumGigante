@@ -40,6 +40,7 @@ void retira(TLD *l, int elem){
   if(p == l){ 
     l = l->prim;
   }
+  if (p == l->ultimo) l->ultimo = p;
   else p->ant->prox = p->prox;
   if(p->prox) p->prox->ant = p->ant;
   free(p);
