@@ -12,9 +12,18 @@ void insere_ini(lista *l, int elem){
 //  if(l) l->ant = novo;
 } 
 
-void insere_final(lista *l, int elem){
+void insere_fin(lista *l, int elem){
+  if (l->tam == 0){
+    insere_ini(l, elem);
+    return;
+  }
   elementos *novo = (elementos *) malloc(sizeof(elementos));
-
+  novo->ant = l->ultimo;
+  novo->prox = NULL;
+  novo->info = elem;
+  l->ultimo->prox = novo;
+  l->ultimo = novo;
+  l->tam++;
 }
 
 void imprime(lista *l){
