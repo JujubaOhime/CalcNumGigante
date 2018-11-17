@@ -4,18 +4,18 @@
 typedef struct lde{
   int info;
   struct lde *ant, *prox;
-} TLDE;
+} elementos;
 
 typedef struct ldes{
-  TLDE *prim;
+  elementos *prim;
   int tam;
-  TLDE *ultimo;
-} TLD;
+  elementos *ultimo;
+} lista;
 
-TLD* inicializa(void);
-void insere_ini(TLD *l, int elem);
-void insere_fin(TLD *l, int elem);
-void imprime(TLD *l);
-void libera(TLD *l);
-void retira(TLD *l, int elem);
-TLDE* busca(TLDE *l, int elem);
+lista* inicializa(void);
+void insere_ini(lista *l, int elem);
+void insere_fin(lista *l, int elem);
+void imprime(lista *l);
+void libera(lista *l);
+void retira(lista *l, int elem);
+elementos* busca(lista *l, int elem);
