@@ -28,7 +28,6 @@ void insere_fin(lista *l, int elem){
 
 void imprime(lista *l){
   elementos *p = l->prim;
-  if (l) printf("imprimindo a lista \n");
   while(p){
     printf("%d ", p->info);
     p = p->prox;
@@ -88,22 +87,20 @@ elementos* busca(lista *l, int elem){
   return p;
 }
 
-lista* inicializa_e_insere(){
+lista* inicializa_e_insere(int num){
   lista *novo = (lista*) malloc(sizeof(lista));
   novo->prim = NULL;
   novo->ultimo = NULL;
   novo->tam = 0;
-  printf("escreva o número \n");
-  int num, i;
-  scanf(" %d", &num);
+  int i;
   if (num<0) novo->sinal = 1; // se for numero negativo, o sinal vai ter valor 1
   else novo->sinal = 0; // se for numero positivo, o sinal vai ter 0
   int tamanho = tam_int(num);
-  char str[tamanho+1];
-  sprintf(str, "%d", num);
+  char str[tamanho+2];
+  sprintf(str, "%d", abs(num));
   for (i=0; i<tamanho; i++){
-        int temp = str[i] - '0'; //converte a str[i] em inteiro
-        insere_fin(novo, temp);
+    int temp = str[i] - '0'; //converte a str[i] em inteiro
+    insere_fin(novo, temp);
   }
   return novo;
 }
@@ -118,28 +115,29 @@ lista* inicializa(){
 
 int tam_int(int numero){
   int tam = 1;
-  while (numero/10 > 1){
+  int num = abs(numero);
+  while (abs(num/10) >= 1){
     tam++;
-    numero = numero/10;
+    num = num/10;
   }
   return tam;
 }
 
-lista* soma(lista *l1, lista *l2){
-  int diferenca_de_tam = abs(l1->tam - l2->tam);
-  int i;
-  if (l1->tam > l2->tam){
-    for (i=0;i<diferenca_de_tam; i++){
-      insere_ini(l2, 0);
-    }
+lista* soma(int num1,int num2){
+  if (abs(num2) > abs(num1)){
+    int temp = num1;
+    num1 = num2;
+    num2 = temp;
   }
-  if (l2->tam > l1->tam){
-    for (i=0;i<diferenca_de_tam; i++){
-      insere_ini(l1, 0);
-    }
+  lista *l1 = inicializa_e_insere(num1);
+  lista *l2 = inicializa_e_insere(num2);
+  if (l1->sinal != l2->sinal){ // se l1 tiver sinal diferente de l2 isso vai ser uma subtração!
+    return subtracao(num1, num2);
   }
-  int temp=0;
+  conserta_dif_de_tam(l1, l2);
+  int temp=0, i;
   lista *l3 = inicializa();
+  l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
   for (i=0; i<l1->tam; i++){
     int resultado = l1->ultimo->info + l2->ultimo->info + temp;
     if (resultado >= 10) {
@@ -152,7 +150,59 @@ lista* soma(lista *l1, lista *l2){
     insere_ini(l3, resultado);
   }
   if (temp==1) insere_ini(l3, 1);
-  printf("O resultado de n1 + n2 é: ");
+  printf("O resultado de é: ");
+  if (l3->sinal == 1) printf("-");
   imprime(l3);
+  libera(l1);
+  libera(l2);
   return l3;
+}
+
+lista* subtracao(int num1, int num2){
+  num2 = -num2; // como é uma subtração, o segundo elemento vai trocar o sinal
+  if (abs(num2) > abs(num1)){
+    int temp = num1;
+    num1 = num2;
+    num2 = temp;
+  }
+  lista *l1 = inicializa_e_insere(num1);
+  lista *l2 = inicializa_e_insere(num2);
+  conserta_dif_de_tam(l1, l2);
+  if (l1->sinal == l2->sinal) return soma(num1, num2); // se ambos tiverem mesmo sinal isso vai ser uma soma logo retornar soma
+  int temp=0, i;
+  lista *l3 = inicializa(); 
+  l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
+  for (i=0; i<l1->tam; i++){
+      int resultado = l1->ultimo->info - l2->ultimo->info - temp;
+      if (resultado < 0) {
+        temp = 1;
+        resultado = 10-abs(resultado);
+      }
+      else temp=0;
+      l1->ultimo = l1->ultimo->ant;
+      l2->ultimo = l2->ultimo->ant;
+      insere_ini(l3, resultado);
+  }
+  printf("O resultado é: ");
+  if (l3->sinal) printf("-");
+  imprime(l3);
+  libera(l1);
+  libera(l2);
+  return l3;
+  }
+
+void conserta_dif_de_tam(lista *l1, lista *l2){
+  int diferenca_de_tam = abs(l1->tam - l2->tam); //pegando a diferença de tamanho entre os numeros para igualar o numero de casas
+  int i;
+  if (l1->tam > l2->tam){ // igualando aqui o numero de casas dos números
+    for (i=0;i<diferenca_de_tam; i++){
+      insere_ini(l2, 0);
+    }
+  }
+  if (l2->tam > l1->tam){ // igualando aqui o numero de casas dos números
+    for (i=0;i<diferenca_de_tam; i++){
+      insere_ini(l1, 0);
+    }
+  }
+
 }
