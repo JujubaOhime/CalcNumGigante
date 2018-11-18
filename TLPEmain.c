@@ -1,35 +1,42 @@
 #include "TLPE.h"
-#include <string.h>
+
 
 int main(void){
+
     int calculadora = 1;
+    FILE *file;
     while (calculadora){
-        printf("Escreva n1 \n");
-        int n1;
-        scanf("%d", &n1);
-        printf("Escreva 1 para somar, 2 para diminuir e 3 para sair\n");
-        int op;
-        scanf("%d", &op);
-        if (op==1){
-            printf("Escreva n2 \n");
-            int n2;
-            scanf("%d", &n2);
-            lista* lista3 = soma(n1,n2);
+        file = fopen("leitura.txt", "r");
+        if (file == NULL){
+            printf("Arquivo não pode ser aberto \n");
+        return 0;
+        }
+        lista *l1 = inicializa();
+        pega_elementos(l1, file);
+        imprime(l1);
+        lista *l2 = inicializa();
+        pega_elementos(l2, file);
+        imprime(l2);
+        printf("Escreva + para somar, - para diminuir e s para sair\n");
+        char op;
+        scanf(" %c", &op);
+        if (op=='+'){
+            lista* lista3 = soma(l1,l2);
             free(lista3);
         }
-        else if(op == 2){
-            printf("Escreva n2 \n");
-            int n2;
-            scanf("%d", &n2);
-            lista* lista3 = subtracao(n1,n2);
+        else if(op == '-'){
+            lista* lista3 = subtracao(l1,l2);
             free(lista3);
         }
-        else if(op==3){
+        else if(op=='S' || op=='s'){
             calculadora = 0;
         }
         else{
             printf("Operação inválida \n");
         }
+        printf("\n");
     }
+    fclose(file);
+    printf("Volte sempre :) \n");
     return 0;
 }

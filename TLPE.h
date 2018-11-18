@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct lde{
   int info;
@@ -14,10 +15,8 @@ typedef struct ldes{
 } lista;
 
 lista* inicializa(void);
-lista* inicializa_e_insere(int num);
-lista* soma(int num1, int num2);
-lista* subtracao(int num1, int num2);
-int tam_int(int numero);
+lista* soma(lista *l1, lista *l2);
+lista* subtracao(lista *l1, lista *l2);
 void insere_ini(lista *l, int elem);
 void insere_fin(lista *l, int elem);
 void imprime(lista *l);
@@ -25,3 +24,4 @@ void libera(lista *l);
 void retira(lista *l, int elem);
 elementos* busca(lista *l, int elem);
 void conserta_dif_de_tam(lista *l1, lista *l2);
+void pega_elementos(lista *l,FILE *file);
