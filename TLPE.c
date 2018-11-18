@@ -28,10 +28,12 @@ void insere_fin(lista *l, int elem){
 
 void imprime(lista *l){
   elementos *p = l->prim;
+  if (l) printf("imprimindo a lista \n");
   while(p){
-    printf("%d \n", p->info);
+    printf("%d ", p->info);
     p = p->prox;
-  } 
+  }
+  printf("\n"); 
 }
 
 void libera(lista *l){
@@ -86,6 +88,26 @@ elementos* busca(lista *l, int elem){
   return p;
 }
 
+lista* inicializa_e_insere(){
+  lista *novo = (lista*) malloc(sizeof(lista));
+  novo->prim = NULL;
+  novo->ultimo = NULL;
+  novo->tam = 0;
+  printf("escreva o número \n");
+  int num, i;
+  scanf(" %d", &num);
+  if (num<0) novo->sinal = 1; // se for numero negativo, o sinal vai ter valor 1
+  else novo->sinal = 0; // se for numero positivo, o sinal vai ter 0
+  int tamanho = tam_int(num);
+  char str[tamanho+1];
+  sprintf(str, "%d", num);
+  for (i=0; i<tamanho; i++){
+        int temp = str[i] - '0'; //converte a str[i] em inteiro
+        insere_fin(novo, temp);
+  }
+  return novo;
+}
+
 lista* inicializa(){
   lista *novo = (lista*) malloc(sizeof(lista));
   novo->prim = NULL;
@@ -94,3 +116,43 @@ lista* inicializa(){
   return novo;
 }
 
+int tam_int(int numero){
+  int tam = 1;
+  while (numero/10 > 1){
+    tam++;
+    numero = numero/10;
+  }
+  return tam;
+}
+
+lista* soma(lista *l1, lista *l2){
+  int diferenca_de_tam = abs(l1->tam - l2->tam);
+  int i;
+  if (l1->tam > l2->tam){
+    for (i=0;i<diferenca_de_tam; i++){
+      insere_ini(l2, 0);
+    }
+  }
+  if (l2->tam > l1->tam){
+    for (i=0;i<diferenca_de_tam; i++){
+      insere_ini(l1, 0);
+    }
+  }
+  int temp=0;
+  lista *l3 = inicializa();
+  for (i=0; i<l1->tam; i++){
+    int resultado = l1->ultimo->info + l2->ultimo->info + temp;
+    if (resultado >= 10) {
+      temp = 1;
+      resultado = resultado%10;
+    }
+    else temp=0;
+    l1->ultimo = l1->ultimo->ant;
+    l2->ultimo = l2->ultimo->ant;
+    insere_ini(l3, resultado);
+  }
+  if (temp==1) insere_ini(l3, 1);
+  printf("O resultado de n1 + n2 é: ");
+  imprime(l3);
+  return l3;
+}

@@ -10,9 +10,13 @@ typedef struct ldes{
   elementos *prim;
   int tam;
   elementos *ultimo;
+  int sinal;
 } lista;
 
 lista* inicializa(void);
+lista* inicializa_e_insere(void);
+lista* soma(lista *l1, lista *l2);
+int tam_int(int numero);
 void insere_ini(lista *l, int elem);
 void insere_fin(lista *l, int elem);
 void imprime(lista *l);
