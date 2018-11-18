@@ -96,15 +96,14 @@ lista* inicializa(){
   novo->prim = NULL;
   novo->ultimo = NULL;
   novo->tam = 0;
+  novo->maior = 0;
   return novo;
 }
 
-
-
-
-
 lista* soma(lista *l1, lista *l2){
-  if (l1->sinal != l2->sinal){ // se l1 tiver sinal diferente de l2 isso vai ser uma subtração!
+  if (l1->sinal != l2->sinal){ // se l1 tiver sinal diferente de l2 isso vai ser uma subtração
+    if (l2->sinal == 1) l2->sinal = 0; // a troca de sinal aqui é porque quando vai pra subtração troca o sinal 
+    else l2->sinal = 1; // e para deixar intocado deve trocar aqui
     return subtracao(l1, l2);
   }
   conserta_dif_de_tam(l1, l2);
@@ -123,8 +122,7 @@ lista* soma(lista *l1, lista *l2){
     insere_ini(l3, resultado);
   }
   if (temp==1) insere_ini(l3, 1);
-  printf("O resultado de é: ");
-  if (l3->sinal == 1) printf("-");
+  printf("O resultado é: ");
   imprime(l3);
   libera(l1);
   libera(l2);
@@ -132,10 +130,19 @@ lista* soma(lista *l1, lista *l2){
 }
 
 lista* subtracao(lista *l1, lista *l2){
-  if (l2->sinal == 0) l2->sinal = 1;
   if (l2->sinal == 1) l2->sinal = 0;
+  else l2->sinal = 1; 
+  if (l1->sinal == l2->sinal){// se ambos tiverem mesmo sinal isso vai ser uma soma logo retornar soma
+    return soma(l1, l2);
+  }
   conserta_dif_de_tam(l1, l2);
-  if (l1->sinal == l2->sinal) return soma(l1, l2); // se ambos tiverem mesmo sinal isso vai ser uma soma logo retornar soma
+  verifica_maior(l1, l2);
+  lista *aux;
+  if (l2->maior == 1){
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
   int temp=0, i;
   lista *l3 = inicializa(); 
   l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
@@ -151,7 +158,6 @@ lista* subtracao(lista *l1, lista *l2){
       insere_ini(l3, resultado);
   }
   printf("O resultado é: ");
-  if (l3->sinal) printf("-");
   imprime(l3);
   libera(l1);
   libera(l2);
@@ -186,5 +192,25 @@ void pega_elementos(lista *l, FILE *file){
       int temp = str - '0';
       insere_fin(l, temp);
       str = getc(file);
+  }
+}
+
+void verifica_maior(lista *l1, lista *l2){
+  int temp = 0;
+  conserta_dif_de_tam(l1, l2);
+  int i;
+  elementos *p1 = l1->prim;
+  elementos *p2 = l2->prim;
+  for (i=0; i<l1->tam; i++){
+    if (p1->info > p2->info){
+      l1->maior = 1;
+      break;
+    }
+    if (p1->info < p2->info){
+      l2->maior = 1;
+      break;
+    }
+    p1 = p1->prox;
+    p2 = p2->prox;
   }
 }

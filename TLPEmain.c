@@ -17,16 +17,17 @@ int main(void){
         lista *l2 = inicializa();
         pega_elementos(l2, file);
         imprime(l2);
+        lista *l3;
         printf("Escreva + para somar, - para diminuir e s para sair\n");
         char op;
         scanf(" %c", &op);
         if (op=='+'){
-            lista* lista3 = soma(l1,l2);
-            free(lista3);
+            l3 = soma(l2, l1); 
+            free(l3);
         }
         else if(op == '-'){
-            lista* lista3 = subtracao(l1,l2);
-            free(lista3);
+            l3 = subtracao(l2, l1); 
+            free(l3);
         }
         else if(op=='S' || op=='s'){
             calculadora = 0;

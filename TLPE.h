@@ -12,6 +12,7 @@ typedef struct ldes{
   int tam;
   elementos *ultimo;
   int sinal;
+  int maior;
 } lista;
 
 lista* inicializa(void);
@@ -25,3 +26,4 @@ void retira(lista *l, int elem);
 elementos* busca(lista *l, int elem);
 void conserta_dif_de_tam(lista *l1, lista *l2);
 void pega_elementos(lista *l,FILE *file);
+void verifica_maior(lista *l1, lista *l2);
