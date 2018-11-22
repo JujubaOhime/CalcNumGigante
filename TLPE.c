@@ -27,8 +27,8 @@ void insere_fin(lista *l, int elem){
 }
 
 void imprime(lista *l){
-  if (l->sinal == 1) printf("-");
-  else printf("+");
+  if (l->sinal == -1) printf("-");
+  if (l->sinal == 1) printf("+");
   elementos *p = l->prim;
   while(p){
     printf("%d ", p->info);
@@ -100,30 +100,26 @@ lista* inicializa(){
   return novo;
 }
 
-lista* soma(lista *l1, lista *l2){
-  if (l1->sinal != l2->sinal){ // se l1 tiver sinal diferente de l2 isso vai ser uma subtração
-    if (l2->sinal == 1) l2->sinal = 0; // a troca de sinal aqui é porque quando vai pra subtração troca o sinal 
-    else l2->sinal = 1; // e para deixar intocado deve trocar aqui
-    return subtracao(l1, l2);
-  }
-  conserta_dif_de_tam(l1, l2);
-  int temp=0, i;
-  lista *l3 = inicializa();
-  conserta_dif_de_tam(l1, l2);
-  verifica_maior(l1, l2);
-  lista *aux;
-  if (l2->maior == 1){
-    aux = l1;
-    l1 = l2;
-    l2 = aux;
-  }
-  printf("entrou em soma \n");
-  printf("l1->sinal: %d", l1->sinal);
-  printf("l2->sinal: %d", l2->sinal);
-  verifica_maior(l1, l2);
-  l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
+
+void subtrai(lista *l1, lista *l2, lista *l3){
+  int i, resultado, temp=0;
   for (i=0; i<l1->tam; i++){
-    int resultado = l1->ultimo->info + l2->ultimo->info + temp;
+    resultado = l1->ultimo->info - l2->ultimo->info - temp;
+    if (resultado < 0) {
+      temp = 1;
+      resultado = 10-abs(resultado);
+    }
+    else temp=0;
+    l1->ultimo = l1->ultimo->ant;
+    l2->ultimo = l2->ultimo->ant;
+    insere_ini(l3, resultado);
+  }
+}
+
+void soma(lista *l1, lista *l2, lista *l3){
+  int i, temp=0, resultado;
+  for (i=0; i<l1->tam; i++){
+    resultado = l1->ultimo->info + l2->ultimo->info + temp;
     if (resultado >= 10) {
       temp = 1;
       resultado = resultado%10;
@@ -132,47 +128,64 @@ lista* soma(lista *l1, lista *l2){
     l1->ultimo = l1->ultimo->ant;
     l2->ultimo = l2->ultimo->ant;
     insere_ini(l3, resultado);
-  }
+    }
   if (temp==1) insere_ini(l3, 1);
+}
+
+
+lista* inicia_soma(lista *l1, lista *l2){
+  int temp=0, i;
+  lista *l3 = inicializa();
+  verifica_maior(l1, l2);
+  lista *aux;
+  if (l2->maior == 1){
+    l3->sinal = l2->sinal;
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
+  else{
+    l3->sinal = l1->sinal;
+  }
+  if (l1->sinal == l2->sinal) { // vai somar 
+    soma(l1, l2, l3);
+  }
+  else{ // vai subtrair
+    subtrai(l1, l2, l3);
+  }
   printf("O resultado é: ");
-  imprime(l3);
   libera(l1);
   libera(l2);
   return l3;
 }
 
-lista* subtracao(lista *l1, lista *l2){
-  if (l2->sinal == 1) l2->sinal = 0;
-  else l2->sinal = 1; 
-  if (l1->sinal == l2->sinal){// se ambos tiverem mesmo sinal isso vai ser uma soma logo retornar soma
-    return soma(l1, l2);
-  }
-  conserta_dif_de_tam(l1, l2);
-  verifica_maior(l1, l2);
+lista* inicia_subtracao(lista *l1, lista *l2){
+  int temp = 0, i;
+  lista *l3 = inicializa();
+  if (l2->sinal==-1) l2->sinal = 1;
+  else l2->sinal = -1;
   lista *aux;
-  int temp=0, i;
-  printf("l1->sinal: %d", l1->sinal);
-  printf("l2->sinal: %d", l2->sinal);
-  lista *l3 = inicializa(); 
-  l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
-  for (i=0; i<l1->tam; i++){
-      int resultado = l1->ultimo->info - l2->ultimo->info - temp;
-      if (resultado < 0) {
-        temp = 1;
-        resultado = 10-abs(resultado);
-      }
-      else temp=0;
-      l1->ultimo = l1->ultimo->ant;
-      l2->ultimo = l2->ultimo->ant;
-      insere_ini(l3, resultado);
+  verifica_maior(l1, l2);
+  if (l2->maior == 1){
+    l3->sinal = l2->sinal;
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
+  else{
+    l3->sinal = l1->sinal;
+  }
+  if (l1->sinal != l2->sinal){
+    subtrai(l1, l2, l3);
+  }  
+  else{
+    soma(l1, l2, l3);
   }
   printf("O resultado é: ");
-  imprime(l3);
   libera(l1);
   libera(l2);
   return l3;
   }
-
 
 void conserta_dif_de_tam(lista *l1, lista *l2){
   int diferenca_de_tam = abs(l1->tam - l2->tam); //pegando a diferença de tamanho entre os numeros para igualar o numero de casas
@@ -193,8 +206,8 @@ void conserta_dif_de_tam(lista *l1, lista *l2){
 void pega_elementos(lista *l, FILE *file){
   char str;
   str = getc(file);
-  if (str == '+') l->sinal = 0;
-  else l->sinal = 1;
+  if (str == '+') l->sinal = 1;
+  else l->sinal = -1;
   str = getc(file);
   while (str != '\n')
   {

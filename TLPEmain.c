@@ -22,11 +22,13 @@ int main(void){
         char op;
         scanf(" %c", &op);
         if (op=='+'){
-            l3 = soma(l2, l1); 
+            l3 = inicia_soma(l1, l2);
+            imprime(l3); 
             free(l3);
         }
         else if(op == '-'){
-            l3 = subtracao(l2, l1); 
+            l3 = inicia_subtracao(l1, l2);
+            imprime(l3); 
             free(l3);
         }
         else if(op=='S' || op=='s'){
