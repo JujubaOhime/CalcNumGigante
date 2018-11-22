@@ -109,6 +109,18 @@ lista* soma(lista *l1, lista *l2){
   conserta_dif_de_tam(l1, l2);
   int temp=0, i;
   lista *l3 = inicializa();
+  conserta_dif_de_tam(l1, l2);
+  verifica_maior(l1, l2);
+  lista *aux;
+  if (l2->maior == 1){
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
+  printf("entrou em soma \n");
+  printf("l1->sinal: %d", l1->sinal);
+  printf("l2->sinal: %d", l2->sinal);
+  verifica_maior(l1, l2);
   l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
   for (i=0; i<l1->tam; i++){
     int resultado = l1->ultimo->info + l2->ultimo->info + temp;
@@ -138,12 +150,9 @@ lista* subtracao(lista *l1, lista *l2){
   conserta_dif_de_tam(l1, l2);
   verifica_maior(l1, l2);
   lista *aux;
-  if (l2->maior == 1){
-    aux = l1;
-    l1 = l2;
-    l2 = aux;
-  }
   int temp=0, i;
+  printf("l1->sinal: %d", l1->sinal);
+  printf("l2->sinal: %d", l2->sinal);
   lista *l3 = inicializa(); 
   l3->sinal = l1->sinal; // l3 vai ter osinal do maior na operação que é o l1 sempre já que verificamos
   for (i=0; i<l1->tam; i++){
