@@ -1,7 +1,7 @@
 #include "TLPE.h"
 
 void insere_ini(lista *l, int elem){
-  elementos *novo = (elementos *) malloc(sizeof(elementos));
+  elemento *novo = (elemento *) malloc(sizeof(elemento));
   novo->ant = NULL;
   novo->info = elem;
   novo->prox = l->prim;
@@ -17,7 +17,7 @@ void insere_fin(lista *l, int elem){
     insere_ini(l, elem);
     return;
   }
-  elementos *novo = (elementos *) malloc(sizeof(elementos));
+  elemento *novo = (elemento *) malloc(sizeof(elemento));
   novo->ant = l->ultimo;
   novo->prox = NULL;
   novo->info = elem;
@@ -30,7 +30,7 @@ void imprime(lista *l){
   printf("\e[1m");
   if (l->sinal == -1) printf("-");
   if (l->sinal == 1) printf("+");
-  elementos *p = l->prim;
+  elemento *p = l->prim;
   while(p){
     printf("%d", p->info);
     p = p->prox;
@@ -39,7 +39,7 @@ void imprime(lista *l){
 }
 
 void libera(lista *l){
-  elementos *p = l->prim, *q;
+  elemento *p = l->prim, *q;
   while(p){
     q = p;
     p = p->prox;
@@ -53,17 +53,17 @@ void retira(lista *l, int elem){
     libera(l);
     return;
   }
-  elementos *p = l->prim;
+  elemento *p = l->prim;
   while((p)&&(p->info!=elem)){
     p = p->prox;
   }
   if (!p) return; // se p não existe não vai retornar nada
   l->tam = l->tam - 1;
-  if (!(p->ant) && l->tam>=3){ //se o elemento que quer retirar for o primeiro e tiver mais de 2 elementos
+  if (!(p->ant) && l->tam>=3){ //se o elemento que quer retirar for o primeiro e tiver mais de 2 elemento
     l->prim = l->prim->prox; 
     p->prox->ant = NULL;
     }
-    else if (!(p->ant) && l->tam==2){ //se o elemento que quer retirar for o primeiro e tiver 2 elementos
+    else if (!(p->ant) && l->tam==2){ //se o elemento que quer retirar for o primeiro e tiver 2 elemento
       l->prim = l->prim->prox;
       l->ultimo = l->prim;
       p->prox->ant = NULL;
@@ -81,8 +81,8 @@ void retira(lista *l, int elem){
   free(p);
 }
 
-elementos* busca(lista *l, int elem){
-  elementos *p = l->prim;
+elemento* busca(lista *l, int elem){
+  elemento *p = l->prim;
   while(p && p->info != elem){
     if(p->info == elem) return p;
     p = p->prox;
@@ -204,7 +204,7 @@ void conserta_dif_de_tam(lista *l1, lista *l2){
 
 }
 
-void pega_elementos(lista *l, FILE *file){
+void pega_elemento(lista *l, FILE *file){
   char str;
   str = getc(file);
   if (str == '+') l->sinal = 1;
@@ -222,8 +222,8 @@ void verifica_maior(lista *l1, lista *l2){
   int temp = 0;
   conserta_dif_de_tam(l1, l2);
   int i;
-  elementos *p1 = l1->prim;
-  elementos *p2 = l2->prim;
+  elemento *p1 = l1->prim;
+  elemento *p2 = l2->prim;
   for (i=0; i<l1->tam; i++){
     if (p1->info > p2->info){
       l1->maior = 1;

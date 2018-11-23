@@ -12,11 +12,11 @@ int main(void){
         return 0;
         }
         lista *l1 = inicializa();
-        pega_elementos(l1, file);
+        pega_elemento(l1, file);
         printf("O primeiro número é ");
         imprime(l1);
         lista *l2 = inicializa();
-        pega_elementos(l2, file);
+        pega_elemento(l2, file);
         printf("O segundo número é ");
         imprime(l2);
         lista *l3;

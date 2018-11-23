@@ -1,5 +1,5 @@
 nome_executavel = teste.exe
-codigo_fonte = TLPE.c TLPEmain.c
+codigo_fonte = TLPE.c main.c
 compilador = gcc
 
 run:
