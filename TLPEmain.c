@@ -13,12 +13,14 @@ int main(void){
         }
         lista *l1 = inicializa();
         pega_elementos(l1, file);
+        printf("O primeiro número é ");
         imprime(l1);
         lista *l2 = inicializa();
         pega_elementos(l2, file);
+        printf("O segundo número é ");
         imprime(l2);
         lista *l3;
-        printf("Escreva + para somar, - para diminuir e s para sair\n");
+        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir e \e[31;1ms\e[m para sair.\n");
         char op;
         scanf(" %c", &op);
         if (op=='+'){

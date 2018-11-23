@@ -27,14 +27,15 @@ void insere_fin(lista *l, int elem){
 }
 
 void imprime(lista *l){
+  printf("\e[1m");
   if (l->sinal == -1) printf("-");
   if (l->sinal == 1) printf("+");
   elementos *p = l->prim;
   while(p){
-    printf("%d ", p->info);
+    printf("%d", p->info);
     p = p->prox;
   }
-  printf("\n"); 
+  printf("\e[m\n");
 }
 
 void libera(lista *l){
