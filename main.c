@@ -25,11 +25,13 @@ int main(void){
         scanf(" %c", &op);
         if (op=='+'){
             l3 = inicia_soma(l1, l2);
+            printf("O resultado é: ");
             imprime(l3); 
             free(l3);
         }
         else if(op == '-'){
             l3 = inicia_subtracao(l1, l2);
+            printf("O resultado é: ");
             imprime(l3); 
             free(l3);
         }

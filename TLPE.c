@@ -137,6 +137,7 @@ void soma(lista *l1, lista *l2, lista *l3){
 lista* inicia_soma(lista *l1, lista *l2){
   int temp=0, i;
   lista *l3 = inicializa();
+  conserta_dif_de_tam(l1, l2);
   verifica_maior(l1, l2);
   lista *aux;
   if (l2->maior == 1){
@@ -154,7 +155,6 @@ lista* inicia_soma(lista *l1, lista *l2){
   else{ // vai subtrair
     subtrai(l1, l2, l3);
   }
-  printf("O resultado é: ");
   libera(l1);
   libera(l2);
   return l3;
@@ -166,6 +166,7 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   if (l2->sinal==-1) l2->sinal = 1;
   else l2->sinal = -1;
   lista *aux;
+  conserta_dif_de_tam(l1, l2);
   verifica_maior(l1, l2);
   if (l2->maior == 1){
     l3->sinal = l2->sinal;
@@ -182,7 +183,6 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   else{
     soma(l1, l2, l3);
   }
-  printf("O resultado é: ");
   libera(l1);
   libera(l2);
   return l3;
@@ -220,7 +220,6 @@ void pega_elemento(lista *l, FILE *file){
 
 void verifica_maior(lista *l1, lista *l2){
   int temp = 0;
-  conserta_dif_de_tam(l1, l2);
   int i;
   elemento *p1 = l1->prim;
   elemento *p2 = l2->prim;
