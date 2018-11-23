@@ -40,8 +40,8 @@ int main(void){
             printf("Operação inválida \n");
         }
         printf("\n");
+        fclose(file);
     }
-    fclose(file);
     printf("Volte sempre :) \n");
     return 0;
 }
