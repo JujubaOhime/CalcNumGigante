@@ -97,7 +97,6 @@ lista* inicializa(){
   novo->prim = NULL;
   novo->ultimo = NULL;
   novo->tam = 0;
-  novo->maior = 0;
   return novo;
 }
 
@@ -135,58 +134,50 @@ void soma(lista *l1, lista *l2, lista *l3){
 
 
 lista* inicia_soma(lista *l1, lista *l2){
-  int temp=0, i;
-  lista *l3 = inicializa();
+  lista *aux, *resp = inicializa();
   conserta_dif_de_tam(l1, l2);
-  verifica_maior(l1, l2);
-  lista *aux;
-  if (l2->maior == 1){
-    l3->sinal = l2->sinal;
+  int respCmp = verifica_maior(l1, l2);
+  if (respCmp == 1){
+    resp->sinal = l2->sinal;
     aux = l1;
     l1 = l2;
     l2 = aux;
   }
   else{
-    l3->sinal = l1->sinal;
+    resp->sinal = l1->sinal;
   }
-  if (l1->sinal == l2->sinal) { // vai somar 
-    soma(l1, l2, l3);
+  if (l1->sinal == l2->sinal) { 
+    soma(l1, l2, resp);
   }
-  else{ // vai subtrair
-    subtrai(l1, l2, l3);
+  else{
+    subtrai(l1, l2, resp);
   }
-  libera(l1);
-  libera(l2);
-  return l3;
+  return resp;
 }
 
 lista* inicia_subtracao(lista *l1, lista *l2){
-  int temp = 0, i;
-  lista *l3 = inicializa();
+  lista *aux, *resp = inicializa();
   if (l2->sinal==-1) l2->sinal = 1;
   else l2->sinal = -1;
-  lista *aux;
   conserta_dif_de_tam(l1, l2);
-  verifica_maior(l1, l2);
-  if (l2->maior == 1){
-    l3->sinal = l2->sinal;
+  int respCmp = verifica_maior(l1, l2);
+  if (respCmp == 1){
+    resp->sinal = l2->sinal;
     aux = l1;
     l1 = l2;
     l2 = aux;
   }
   else{
-    l3->sinal = l1->sinal;
+    resp->sinal = l1->sinal;
   }
   if (l1->sinal != l2->sinal){
-    subtrai(l1, l2, l3);
+    subtrai(l1, l2, resp);
   }  
   else{
-    soma(l1, l2, l3);
+    soma(l1, l2, resp);
   }
-  libera(l1);
-  libera(l2);
-  return l3;
-  }
+  return resp;
+}
 
 void conserta_dif_de_tam(lista *l1, lista *l2){
   int diferenca_de_tam = abs(l1->tam - l2->tam); //pegando a diferença de tamanho entre os numeros para igualar o numero de casas
@@ -218,21 +209,15 @@ void pega_elemento(lista *l, FILE *file){
   }
 }
 
-void verifica_maior(lista *l1, lista *l2){
-  int temp = 0;
-  int i;
-  elemento *p1 = l1->prim;
-  elemento *p2 = l2->prim;
-  for (i=0; i<l1->tam; i++){
+int verifica_maior(lista *l1, lista *l2){
+  elemento *p1, *p2;
+  for (p1=l1->prim, p2=l2->prim; p1->prox != NULL; p1=p1->prox, p2=p2->prox){
     if (p1->info > p2->info){
-      l1->maior = 1;
-      break;
+      return -1;
     }
     if (p1->info < p2->info){
-      l2->maior = 1;
-      break;
+      return 1;
     }
-    p1 = p1->prox;
-    p2 = p2->prox;
   }
+  return 0;
 }
