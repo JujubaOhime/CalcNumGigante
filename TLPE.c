@@ -185,7 +185,6 @@ lista* inicia_subtracao(lista *l1, lista *l2){
 
 lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
   lista *aux, *resp = inicializa();
-  int i;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
   if (respCmp == 1){
@@ -193,9 +192,11 @@ lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
     l1 = l2;
     l2 = aux;
   }
+  //imprime(l2);
+  lista *auxl2 = l2;
   elemento *p2 = l2->prim;
   while(p2->info == 0){
-    retira(l2, 0);
+    retira(auxl2, 0);
     p2 = p2->prox;
   }
   lista *contem1 = inicializa();
@@ -205,14 +206,14 @@ lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
     conserta_dif_de_tam(l1, tempresp);
     soma(l1, tempresp, resp);
     libera(tempresp);
-    lista *templ2 = copia_e_remove_elementos_original(l2);
+    lista *templ2 = copia_e_remove_elementos_original(auxl2);
     conserta_dif_de_tam(contem1, templ2);
-    subtrai(templ2, contem1, l2);
+    subtrai(templ2, contem1, auxl2);
     libera(templ2);
-    while (l2->prim->info == 0){
-      retira(l2, 0);
-      if(l2->tam == 0){
-      if (l1->sinal != l2->sinal) resp->sinal = -1;
+    while (auxl2->prim->info == 0){
+      retira(auxl2, 0);
+      if(auxl2->tam == 0){
+      if (l1->sinal != auxl2->sinal) resp->sinal = -1;
       else resp->sinal = 1;
       libera(contem1);
       return resp;
@@ -275,4 +276,47 @@ lista* copia_e_remove_elementos_original(lista *l){
       aux = aux->prox;
   }
   return resp;
+}
+
+lista *inicia_multiplicacao(lista *l1, lista *l2){
+  lista *aux, *soma_total = inicializa();
+  long int i, j, l2tam;
+  conserta_dif_de_tam(l1, l2);
+  int respCmp = verifica_maior(l1, l2);
+  if (respCmp == 1){
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
+  elemento *p2 = l2->prim;
+  while(p2->info == 0){
+    retira(l2, 0);
+    p2 = p2->prox;
+  }
+  p2 = l2->ultimo;
+  l2tam = l2->tam;
+  for (i=0; i<l2tam; i++){
+    lista *pivo = inicializa();
+    lista *mult = inicializa();
+    lista *tempresp = inicializa();
+    insere_ini(pivo, p2->info);
+    if(p2->info == 0)
+      insere_ini(mult, 0);
+    else if(p2->info == 1)
+      mult = l1;
+    else mult = inicia_multiplicacao_ineficiente(l1, pivo);
+    for (j=0; j<i; j++){
+      insere_fin(mult, 0);
+    }
+    tempresp = copia_e_remove_elementos_original(soma_total);
+    conserta_dif_de_tam(mult, tempresp);
+    soma(mult, tempresp, soma_total);
+    libera(pivo);
+    libera(mult);
+    libera(tempresp);
+    p2 = p2->ant;
+  }
+  if (l1->sinal != l2->sinal) soma_total->sinal = -1;
+  else soma_total->sinal = 1;
+  return soma_total;
 }
