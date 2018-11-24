@@ -16,12 +16,24 @@ int main(void){
         lista *l3 = inicializa();
         pega_elemento(l1, file);
         pega_elemento(l2, file);
-
+/*        int i;
+        elemento *p1 = l1->prim;
+        printf("o tamanhode l1 é %d \n", l1->tam);
+        imprime(l1);
+        long int a = l1->tam;
+        for(i=0; i<a; i++){
+            printf("o i é %d \n", i);
+            printf("p1->info é %d \n", p1->info);
+            retira(l1, p1->info);
+            imprime(l1);
+            p1 = p1->prox;
+        }
+        */
         printf("O primeiro número é ");
         imprime(l1);
         printf("O segundo número é ");
         imprime(l2);
-        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir e \e[31;1ms\e[m para sair: ");
+        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, * para multiplicar e \e[31;1ms\e[m para sair: ");
         char op;
         scanf(" %c", &op);
         printf("\ec");
@@ -34,6 +46,11 @@ int main(void){
             l3 = inicia_subtracao(l1, l2);
             printf("O resultado é: ");
             imprime(l3); 
+        }
+        else if(op == '*'){
+            l3 = inicia_multiplicacao(l1, l2);
+            printf("O resultado é: ");
+            imprime(l3);
         }
         else if(op=='S' || op=='s'){
             calculadora = 0;

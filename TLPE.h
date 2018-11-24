@@ -9,7 +9,7 @@ typedef struct lde{
 
 typedef struct ldes{
   elemento *prim;
-  int tam;
+  unsigned long int tam;
   elemento *ultimo;
   int sinal;
 } lista;
@@ -25,6 +25,7 @@ void libera(lista *l);
 void retira(lista *l, int elem);
 elemento* busca(lista *l, int elem);
 void pega_elemento(lista *l,FILE *file);
+lista *inicia_multiplicacao(lista *l1, lista *l2);
 
 // Funções utitlizadas dentro do código fonte.
 void conserta_dif_de_tam(lista *l1, lista *l2);

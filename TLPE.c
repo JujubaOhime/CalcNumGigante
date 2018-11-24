@@ -50,7 +50,9 @@ void libera(lista *l){
 
 void retira(lista *l, int elem){
   if (l->tam == 1){
-    libera(l);
+    l->prim = NULL;
+    l->ultimo = NULL;
+    l->tam = 0;
     return;
   }
   elemento *p = l->prim;
@@ -58,12 +60,12 @@ void retira(lista *l, int elem){
     p = p->prox;
   }
   if (!p) return; // se p não existe não vai retornar nada
-  l->tam = l->tam - 1;
-  if (!(p->ant) && l->tam>=3){ //se o elemento que quer retirar for o primeiro e tiver mais de 2 elemento
+  if (!(p->ant) && l->tam>=3){ //se o elemento que quer retirar for o primeiro e tiver mais de 2 elementos
     l->prim = l->prim->prox; 
     p->prox->ant = NULL;
     }
-    else if (!(p->ant) && l->tam==2){ //se o elemento que quer retirar for o primeiro e tiver 2 elemento
+    else if (!(p->ant) && l->tam==2){ //se o elemento que quer retirar for o primeiro e tiver 2 elementos
+      printf("entrou nessa condição \n");
       l->prim = l->prim->prox;
       l->ultimo = l->prim;
       p->prox->ant = NULL;
@@ -78,6 +80,7 @@ void retira(lista *l, int elem){
       p->ant->prox = p->prox;
       }
     }
+  l->tam = l->tam - 1;
   free(p);
 }
 
@@ -90,8 +93,6 @@ elemento* busca(lista *l, int elem){
   return p;
 }
 
-
-
 lista* inicializa(){
   lista *novo = (lista*) malloc(sizeof(lista));
   novo->prim = NULL;
@@ -103,30 +104,34 @@ lista* inicializa(){
 
 void subtrai(lista *l1, lista *l2, lista *l3){
   int i, resultado, temp=0;
+  elemento *p1 = l1->ultimo;
+  elemento *p2 = l2->ultimo;
   for (i=0; i<l1->tam; i++){
-    resultado = l1->ultimo->info - l2->ultimo->info - temp;
+    resultado = p1->info - p2->info - temp;
     if (resultado < 0) {
       temp = 1;
       resultado = 10-abs(resultado);
     }
     else temp=0;
-    l1->ultimo = l1->ultimo->ant;
-    l2->ultimo = l2->ultimo->ant;
+    p1 = p1->ant;
+    p2 = p2->ant;
     insere_ini(l3, resultado);
   }
 }
 
 void soma(lista *l1, lista *l2, lista *l3){
   int i, temp=0, resultado;
+  elemento *p1 = l1->ultimo;
+  elemento *p2 = l2->ultimo;
   for (i=0; i<l1->tam; i++){
-    resultado = l1->ultimo->info + l2->ultimo->info + temp;
+    resultado = p1->info + p2->info + temp;
     if (resultado >= 10) {
       temp = 1;
       resultado = resultado%10;
     }
     else temp=0;
-    l1->ultimo = l1->ultimo->ant;
-    l2->ultimo = l2->ultimo->ant;
+    p1 = p1->ant;
+    p2 = p2->ant;
     insere_ini(l3, resultado);
     }
   if (temp==1) insere_ini(l3, 1);
@@ -176,6 +181,35 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   else{
     soma(l1, l2, resp);
   }
+  return resp;
+}
+
+lista *inicia_multiplicacao(lista *l1, lista *l2){
+  lista *aux, *resp = inicializa();
+  int i;
+  conserta_dif_de_tam(l1, l2);
+  int respCmp = verifica_maior(l1, l2);
+  if (respCmp == 1){
+    aux = l1;
+    l1 = l2;
+    l2 = aux;
+  }
+  soma(l1, l1, resp);
+  imprime(resp);
+  lista *tempresp = inicializa();
+  elemento *auxresp = resp->prim;
+  long int tam_total_resp = resp->tam;
+  for(i=0; i<tam_total_resp; i++){ // aqui retira os elementos de resp e passa pra tempresp
+    printf("auxresp->info é %d \n", auxresp->info);
+    insere_fin(tempresp, auxresp->info);
+    retira(resp, auxresp->info);
+    imprime(resp);
+    auxresp = auxresp->prox;
+  }
+  soma(l1, tempresp, resp);
+  if (l1->sinal != l2->sinal) resp->sinal = -1;
+  else resp->sinal = 1;
+  free(tempresp);
   return resp;
 }
 
