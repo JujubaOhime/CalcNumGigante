@@ -49,13 +49,13 @@ void libera(lista *l){
 }
 
 void retira(lista *l, int elem){
-  if (l->tam == 1){
+  elemento *p = l->prim;
+  if (l->tam == 1 && p->info == elem){
     l->prim = NULL;
     l->ultimo = NULL;
     l->tam = 0;
     return;
   }
-  elemento *p = l->prim;
   while((p)&&(p->info!=elem)){
     p = p->prox;
   }
@@ -80,7 +80,6 @@ void retira(lista *l, int elem){
       }
     }
   l->tam = l->tam - 1;
-  free(p);
 }
 
 elemento* busca(lista *l, int elem){
@@ -210,12 +209,12 @@ lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
     conserta_dif_de_tam(contem1, templ2);
     subtrai(templ2, contem1, auxl2);
     libera(templ2);
-    while (auxl2->prim->info == 0){
-      retira(auxl2, 0);
-      if(auxl2->tam == 0){
+    while (auxl2->prim->info == 0){ //condição de parada (se l2 for igual a 0 e tam sai da função)
+      if(auxl2->tam == 1){
       if (l1->sinal != auxl2->sinal) resp->sinal = -1;
       else resp->sinal = 1;
       libera(contem1);
+      retira(auxl2, 0);
       return resp;
       }
     }
@@ -280,7 +279,7 @@ lista* copia_e_remove_elementos_original(lista *l){
 
 lista *inicia_multiplicacao(lista *l1, lista *l2){
   lista *aux, *soma_total = inicializa();
-  long int i, j, l2tam, k;
+  long int i, j, k;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
   if (respCmp == 1){
@@ -289,13 +288,16 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
     l2 = aux;
   }
   elemento *p2 = l2->prim;
-  while(p2->info == 0){
+  while(p2->info == 0){ //retira os zeros a esquerda do menor
+    if (l2->tam == 1 && p2->info == 0){
+      insere_fin(soma_total, 0);
+      return soma_total;
+    }
     retira(l2, 0);
     p2 = p2->prox;
   }
   p2 = l2->ultimo;
-  l2tam = l2->tam;
-  for (i=0; i<l2tam; i++){
+  for (i=0; i<l2->tam; i++){
     lista *pivo = inicializa();
     lista *mult = inicializa();
     lista *tempresp = inicializa();
