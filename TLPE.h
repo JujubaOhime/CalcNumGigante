@@ -12,7 +12,6 @@ typedef struct ldes{
   int tam;
   elemento *ultimo;
   int sinal;
-  int maior;
 } lista;
 
 // Funções disponíveis para uso.
@@ -29,6 +28,6 @@ void pega_elemento(lista *l,FILE *file);
 
 // Funções utitlizadas dentro do código fonte.
 void conserta_dif_de_tam(lista *l1, lista *l2);
-void verifica_maior(lista *l1, lista *l2);
+int verifica_maior(lista *l1, lista *l2);
 void subtrai(lista *l1, lista *l2, lista *l3);
 void soma(lista *l1, lista *l2, lista *l3);
