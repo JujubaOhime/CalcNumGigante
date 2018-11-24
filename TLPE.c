@@ -193,41 +193,32 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
     l1 = l2;
     l2 = aux;
   }
-  int contador = 0;
-  while (l2->tam > 0){
-    //printf("está na %dª contagem\n",contador);
-    //printf("resp começo do loop: ");
-    //imprime(resp);
-    elemento *p2 = l2->ultimo;
-    lista *tempresp = inicializa();
-    elemento *auxresp = resp->prim;
-    long int tam_total_resp = resp->tam;
-    for(i=0; i<tam_total_resp; i++){ // aqui retira os elementos de resp e passa pra tempresp
-      //printf("auxresp->info é %d \n", auxresp->info);
-      insere_fin(tempresp, auxresp->info);
-      retira(resp, auxresp->info);
-      auxresp = auxresp->prox;
-    }
-    //printf("tempresp: ");
-    //imprime(tempresp);
+  elemento *p2 = l2->prim;
+  while(p2->info == 0){
+    retira(l2, 0);
+    p2 = p2->prox;
+  }
+  lista *contem1 = inicializa();
+  insere_ini(contem1, 1);
+  while (1){
+    lista *tempresp = copia_e_remove_elementos_original(resp);
     conserta_dif_de_tam(l1, tempresp);
     soma(l1, tempresp, resp);
     libera(tempresp);
-    if(p2->info >= 1) p2->info = p2->info - 1; // remove 1 de p2
-    else{
-      p2->info = 9;
-      p2->ant->info = p2->ant->info - 1;
-    }
-    if (l2->prim->info == 0){
+    lista *templ2 = copia_e_remove_elementos_original(l2);
+    conserta_dif_de_tam(contem1, templ2);
+    subtrai(templ2, contem1, l2);
+    libera(templ2);
+    while (l2->prim->info == 0){
       retira(l2, 0);
+      if(l2->tam == 0){
+      if (l1->sinal != l2->sinal) resp->sinal = -1;
+      else resp->sinal = 1;
+      libera(contem1);
+      return resp;
+      }
     }
-    contador++;
-    //printf("resp fim do loop: ");
-    //imprime(resp);
   }
-  if (l1->sinal != l2->sinal) resp->sinal = -1;
-  else resp->sinal = 1;
-  return resp;
 }
 
 void conserta_dif_de_tam(lista *l1, lista *l2){
@@ -271,4 +262,17 @@ int verifica_maior(lista *l1, lista *l2){
     }
   }
   return 0;
+}
+
+lista* copia_e_remove_elementos_original(lista *l){
+  lista *resp = inicializa();
+  elemento *aux = l->prim;
+  int i;
+  long int tam_total = l->tam;
+  for(i=0; i<tam_total; i++){ // aqui retira os elementos de resp e passa pra tempresp
+      insere_fin(resp, aux->info);
+      retira(l, aux->info);
+      aux = aux->prox;
+  }
+  return resp;
 }

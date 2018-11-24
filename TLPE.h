@@ -32,3 +32,4 @@ void conserta_dif_de_tam(lista *l1, lista *l2);
 int verifica_maior(lista *l1, lista *l2);
 void subtrai(lista *l1, lista *l2, lista *l3);
 void soma(lista *l1, lista *l2, lista *l3);
+lista* copia_e_remove_elementos_original(lista *l);
