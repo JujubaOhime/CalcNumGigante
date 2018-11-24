@@ -183,7 +183,7 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   return resp;
 }
 
-lista *inicia_multiplicacao(lista *l1, lista *l2){
+lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
   lista *aux, *resp = inicializa();
   int i;
   conserta_dif_de_tam(l1, l2);

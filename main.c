@@ -52,7 +52,7 @@ int main(void){
             imprime(l3); 
         }
         else if(op == '*'){
-            l3 = inicia_multiplicacao(l1, l2);
+            l3 = inicia_multiplicacao_ineficiente(l1, l2);
             printf("O resultado é: ");
             imprime(l3);
         }
