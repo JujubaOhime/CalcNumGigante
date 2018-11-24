@@ -37,7 +37,7 @@ int main(void){
         imprime(l1);
         printf("O segundo número é ");
         imprime(l2);
-        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, * para multiplicar, m para multiplicar e \e[31;1ms\e[m para sair: ");
+        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, * para multiplicar e \e[31;1ms\e[m para sair: ");
         char op;
         scanf(" %c", &op);
         printf("\ec");
@@ -52,11 +52,6 @@ int main(void){
             imprime(l3); 
         }
         else if(op == '*'){
-            l3 = inicia_multiplicacao_ineficiente(l1, l2);
-            printf("O resultado é: ");
-            imprime(l3);
-        }
-        else if(op == 'm'){
             l3 = inicia_multiplicacao(l1, l2);
             printf("O resultado é: ");
             imprime(l3);
