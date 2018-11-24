@@ -280,7 +280,7 @@ lista* copia_e_remove_elementos_original(lista *l){
 
 lista *inicia_multiplicacao(lista *l1, lista *l2){
   lista *aux, *soma_total = inicializa();
-  long int i, j, l2tam;
+  long int i, j, l2tam, k;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
   if (respCmp == 1){
@@ -302,8 +302,13 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
     insere_ini(pivo, p2->info);
     if(p2->info == 0)
       insere_ini(mult, 0);
-    else if(p2->info == 1)
-      mult = l1;
+    else if(p2->info == 1){
+      elemento *p1 = l1->ultimo;
+      for(k=0; k<l1->tam; k++){
+        insere_ini(mult, p1->info);
+        p1 = p1->ant;
+      }
+    }
     else mult = inicia_multiplicacao_ineficiente(l1, pivo);
     for (j=0; j<i; j++){
       insere_fin(mult, 0);
