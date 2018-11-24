@@ -16,6 +16,9 @@ int main(void){
         lista *l3 = inicializa();
         pega_elemento(l1, file);
         pega_elemento(l2, file);
+        //conserta_dif_de_tam(l1, l2);
+        //soma(l1, l2, l3);
+        //imprime(l3);
 /*        int i;
         elemento *p1 = l1->prim;
         printf("o tamanhode l1 é %d \n", l1->tam);
@@ -29,6 +32,7 @@ int main(void){
             p1 = p1->prox;
         }
         */
+
         printf("O primeiro número é ");
         imprime(l1);
         printf("O segundo número é ");

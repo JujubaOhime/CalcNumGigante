@@ -65,7 +65,6 @@ void retira(lista *l, int elem){
     p->prox->ant = NULL;
     }
     else if (!(p->ant) && l->tam==2){ //se o elemento que quer retirar for o primeiro e tiver 2 elementos
-      printf("entrou nessa condição \n");
       l->prim = l->prim->prox;
       l->ultimo = l->prim;
       p->prox->ant = NULL;
@@ -194,22 +193,40 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
     l1 = l2;
     l2 = aux;
   }
-  soma(l1, l1, resp);
-  imprime(resp);
-  lista *tempresp = inicializa();
-  elemento *auxresp = resp->prim;
-  long int tam_total_resp = resp->tam;
-  for(i=0; i<tam_total_resp; i++){ // aqui retira os elementos de resp e passa pra tempresp
-    printf("auxresp->info é %d \n", auxresp->info);
-    insere_fin(tempresp, auxresp->info);
-    retira(resp, auxresp->info);
-    imprime(resp);
-    auxresp = auxresp->prox;
+  int contador = 0;
+  while (l2->tam > 0){
+    //printf("está na %dª contagem\n",contador);
+    //printf("resp começo do loop: ");
+    //imprime(resp);
+    elemento *p2 = l2->ultimo;
+    lista *tempresp = inicializa();
+    elemento *auxresp = resp->prim;
+    long int tam_total_resp = resp->tam;
+    for(i=0; i<tam_total_resp; i++){ // aqui retira os elementos de resp e passa pra tempresp
+      //printf("auxresp->info é %d \n", auxresp->info);
+      insere_fin(tempresp, auxresp->info);
+      retira(resp, auxresp->info);
+      auxresp = auxresp->prox;
+    }
+    //printf("tempresp: ");
+    //imprime(tempresp);
+    conserta_dif_de_tam(l1, tempresp);
+    soma(l1, tempresp, resp);
+    libera(tempresp);
+    if(p2->info >= 1) p2->info = p2->info - 1; // remove 1 de p2
+    else{
+      p2->info = 9;
+      p2->ant->info = p2->ant->info - 1;
+    }
+    if (l2->prim->info == 0){
+      retira(l2, 0);
+    }
+    contador++;
+    //printf("resp fim do loop: ");
+    //imprime(resp);
   }
-  soma(l1, tempresp, resp);
   if (l1->sinal != l2->sinal) resp->sinal = -1;
   else resp->sinal = 1;
-  free(tempresp);
   return resp;
 }
 
