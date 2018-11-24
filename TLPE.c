@@ -101,7 +101,8 @@ lista* inicializa(){
 
 
 void subtrai(lista *l1, lista *l2, lista *l3){
-  int i, resultado, temp=0;
+  long unsigned int i;
+  int resultado, temp=0;
   elemento *p1 = l1->ultimo;
   elemento *p2 = l2->ultimo;
   for (i=0; i<l1->tam; i++){
@@ -118,7 +119,8 @@ void subtrai(lista *l1, lista *l2, lista *l3){
 }
 
 void soma(lista *l1, lista *l2, lista *l3){
-  int i, temp=0, resultado;
+  long unsigned int i;
+  int temp=0, resultado;
   elemento *p1 = l1->ultimo;
   elemento *p2 = l2->ultimo;
   for (i=0; i<l1->tam; i++){
@@ -222,8 +224,8 @@ lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
 }
 
 void conserta_dif_de_tam(lista *l1, lista *l2){
-  int diferenca_de_tam = abs(l1->tam - l2->tam); //pegando a diferença de tamanho entre os numeros para igualar o numero de casas
-  int i;
+  long unsigned int diferenca_de_tam = abs(l1->tam - l2->tam); //pegando a diferença de tamanho entre os numeros para igualar o numero de casas
+  long unsigned int i;
   if (l1->tam > l2->tam){ // igualando aqui o numero de casas dos números
     for (i=0;i<diferenca_de_tam; i++){
       insere_ini(l2, 0);
@@ -267,8 +269,8 @@ int verifica_maior(lista *l1, lista *l2){
 lista* copia_e_remove_elementos_original(lista *l){
   lista *resp = inicializa();
   elemento *aux = l->prim;
-  int i;
-  long int tam_total = l->tam;
+  long unsigned int i;
+  long unsigned int tam_total = l->tam;
   for(i=0; i<tam_total; i++){ // aqui retira os elementos de resp e passa pra tempresp
       insere_fin(resp, aux->info);
       retira(l, aux->info);
@@ -279,7 +281,7 @@ lista* copia_e_remove_elementos_original(lista *l){
 
 lista *inicia_multiplicacao(lista *l1, lista *l2){
   lista *aux, *soma_total = inicializa();
-  long int i, j, k;
+  long unsigned int i, j, k;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
   if (respCmp == 1){
