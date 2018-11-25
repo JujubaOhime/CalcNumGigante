@@ -184,39 +184,41 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   return resp;
 }
 
-lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2){
+lista *inicia_multiplicacao_ineficiente(lista *base_soma, lista *qtd_somas){
   lista *aux, *resp = inicializa();
-  conserta_dif_de_tam(l1, l2);
-  int respCmp = verifica_maior(l1, l2);
+  conserta_dif_de_tam(base_soma, qtd_somas);
+  int respCmp = verifica_maior(base_soma, qtd_somas);
   if (respCmp == 1){
-    aux = l1;
-    l1 = l2;
-    l2 = aux;
+    aux = base_soma;
+    base_soma = qtd_somas;
+    qtd_somas = aux;
   }
-  //imprime(l2);
-  lista *auxl2 = l2;
-  elemento *p2 = l2->prim;
+  //imprime(qtd_somas);
+  elemento *p2 = qtd_somas->prim;
   while(p2->info == 0){
-    retira(auxl2, 0);
+    retira(qtd_somas, 0);
     p2 = p2->prox;
   }
-  lista *contem1 = inicializa();
-  insere_ini(contem1, 1);
+  lista *decremento = inicializa();
+  insere_ini(decremento, 1);
+  lista *soma_parcial, *aux_decremento;
   while (1){
-    lista *tempresp = copia_e_remove_elementos_original(resp);
-    conserta_dif_de_tam(l1, tempresp);
-    soma(l1, tempresp, resp);
-    libera(tempresp);
-    lista *templ2 = copia_e_remove_elementos_original(auxl2);
-    conserta_dif_de_tam(contem1, templ2);
-    subtrai(templ2, contem1, auxl2);
-    libera(templ2);
-    while (auxl2->prim->info == 0){ //condição de parada (se l2 for igual a 0 e tam sai da função)
-      if(auxl2->tam == 1){
-      if (l1->sinal != auxl2->sinal) resp->sinal = -1;
+    soma_parcial = copia_e_remove_elementos_original(resp);
+    conserta_dif_de_tam(base_soma, soma_parcial);
+    soma(base_soma, soma_parcial, resp);
+    libera(soma_parcial);
+
+    aux_decremento = copia_e_remove_elementos_original(qtd_somas);
+    conserta_dif_de_tam(decremento, aux_decremento);
+    subtrai(aux_decremento, decremento, qtd_somas);
+    libera(aux_decremento);
+    
+    while (qtd_somas->prim->info == 0){ //condição de parada (se l2 for igual a 0 e tam sai da função)
+      if(qtd_somas->tam == 1){
+      if (base_soma->sinal != qtd_somas->sinal) resp->sinal = -1;
       else resp->sinal = 1;
-      libera(contem1);
-      retira(auxl2, 0);
+      libera(decremento);
+      retira(qtd_somas, 0);
       return resp;
       }
     }
