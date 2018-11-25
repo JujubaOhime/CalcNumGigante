@@ -330,32 +330,34 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
   return soma_total;
 }
 
-lista *inicia_divisao(lista *l1, lista *l2)
+lista *inicia_divisao(lista *dividendo, lista *divisor)
 {
   lista *quociente = inicializa();
   lista *auxDividendo = inicializa();
   unsigned long int contador;
-  unsigned long int tam_divisor = l2->tam;
+  unsigned long int tam_divisor = divisor->tam;
   for(contador = 0; contador < tam_divisor; contador++)
   {
-    int primDigDividendo = l1->prim->info;
+    int primDigDividendo = dividendo->prim->info;
     insere_fin(auxDividendo, primDigDividendo);
-    retira(l1, 0);
+    retira(dividendo, 0);
   }
-  unsigned long int tam_dividendo = l1->tam;
+  imprime(auxDividendo);
+  imprime(dividendo);
+  unsigned long int tam_dividendo = dividendo->tam;
   while (tam_dividendo>0)
   {
     int proxDigitoQuociente = 0;
-    while (!(verifica_maior(auxDividendo, l2)))
+    while (!(verifica_maior(auxDividendo, divisor)))
     {
-      subtrai(auxDividendo, l2, auxDividendo);
+      subtrai(auxDividendo, divisor, auxDividendo);
       proxDigitoQuociente = proxDigitoQuociente + 1;
     }
     insere_fin(quociente, proxDigitoQuociente);
-    int primDigDividendo = l1->prim->info;
+    int primDigDividendo = dividendo->prim->info;
     insere_fin(auxDividendo, primDigDividendo);
-    retira(l1, 0);
-    unsigned long int tam_dividendo = l1->tam;
+    retira(dividendo, 0);
+    unsigned long int tam_dividendo = dividendo->tam;
     libera(auxDividendo);
   }
   return quociente;
