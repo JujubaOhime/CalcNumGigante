@@ -27,6 +27,7 @@ elemento* busca(lista *l, int elem);
 void pega_elemento(lista *l,FILE *file);
 lista *inicia_multiplicacao_ineficiente(lista *l1, lista *l2);
 lista *inicia_multiplicacao(lista *l1, lista *l2);
+lista *inicia_divisao(lista *l1, lista *l2);
 
 // Funções utitlizadas dentro do código fonte.
 void conserta_dif_de_tam(lista *l1, lista *l2);
