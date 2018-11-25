@@ -4,7 +4,8 @@ Checa tamanho do Divisor n
 Cria uma lista Quociente
 Cria lista com os primeiros n dígitos do Dividendo auxDivisao, vai atuar como o “resto intermediário”
     Enquanto tamanho do Dividendo for maior ou igual a n
-        Enquanto auxDivisao for maior ou igual ao Divisor, inicializando i = 0 
+        inicializa i = 0 
+        Enquanto auxDivisao for maior ao Divisor
         auxDivisao = auxDivisao -  Divisor
         i++
 Adiciona o dígito i na lista Quociente
