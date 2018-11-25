@@ -142,7 +142,7 @@ lista* inicia_soma(lista *l1, lista *l2){
   lista *aux, *resp = inicializa();
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
-  if (respCmp == 1){
+  if (respCmp == -1){
     resp->sinal = l2->sinal;
     aux = l1;
     l1 = l2;
@@ -166,7 +166,7 @@ lista* inicia_subtracao(lista *l1, lista *l2){
   else l2->sinal = -1;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
-  if (respCmp == 1){
+  if (respCmp == -1){
     resp->sinal = l2->sinal;
     aux = l1;
     l1 = l2;
@@ -188,7 +188,7 @@ lista *inicia_multiplicacao_ineficiente(lista *base_soma, lista *qtd_somas){
   lista *aux, *resp = inicializa();
   conserta_dif_de_tam(base_soma, qtd_somas);
   int respCmp = verifica_maior(base_soma, qtd_somas);
-  if (respCmp == 1){
+  if (respCmp == -1){
     aux = base_soma;
     base_soma = qtd_somas;
     qtd_somas = aux;
@@ -241,6 +241,15 @@ void conserta_dif_de_tam(lista *l1, lista *l2){
 
 }
 
+void retira_zeros_esquerda(lista *numero){
+  elemento *p = numero->prim;
+  while(!p->info){
+    if (numero->tam == 1) return;
+    retira(numero, 0);
+    p = p->prox;
+    }
+}
+
 void pega_elemento(lista *l, FILE *file){
   char str;
   str = getc(file);
@@ -257,13 +266,13 @@ void pega_elemento(lista *l, FILE *file){
 
 int verifica_maior(lista *l1, lista *l2){
   elemento *p1, *p2;
-  if (l1->tam > l2->tam) return -1;
-  if (l1->tam < l2->tam) return 1;
+  if (l1->tam < l2->tam) return -1;
+  if (l1->tam > l2->tam) return 1;
   for (p1=l1->prim, p2=l2->prim; p1 != NULL; p1=p1->prox, p2=p2->prox){
-    if (p1->info > p2->info){
+    if (p1->info < p2->info){
       return -1;
     }
-    if (p1->info < p2->info){
+    if (p1->info > p2->info){
       return 1;
     }
   }
@@ -277,7 +286,6 @@ lista* copia_e_remove_elementos_original(lista *l){
   long unsigned int tam_total = l->tam;
   for(i=0; i<tam_total; i++){ // aqui retira os elementos de resp e passa pra tempresp
       insere_fin(resp, aux->info);
-      imprime(resp);
       retira(l, aux->info);
       aux = aux->prox;
   }
@@ -290,7 +298,7 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
   long unsigned int i, j, k;
   conserta_dif_de_tam(l1, l2);
   int respCmp = verifica_maior(l1, l2);
-  if (respCmp == 1){
+  if (respCmp == -1){
     aux = l1;
     l1 = l2;
     l2 = aux;
@@ -339,61 +347,46 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
 lista *inicia_divisao(lista *dividendo, lista *divisor){
   lista *quociente = inicializa();
   long unsigned int i;
-  int respCmp = verifica_maior(dividendo, divisor); //se -1 o dividendo é maior e ok. se não for maior isso resulta em 0
-  if (respCmp == 1){
+  int respCmp = verifica_maior(dividendo, divisor); //se divisor for maior o quociente é 0 e acaba aqui
+  if (respCmp == -1){
     insere_fin(quociente, 0);
     return quociente;
   }
   elemento* elementoDividendo = dividendo->prim;
-  lista *auxDividendo = inicializa();
-  for(i=0; i<divisor->tam; i++){
+  lista *auxDividendo = inicializa(); 
+  for(i=0; i<divisor->tam; i++){ // pega o auxdividendo de tamanho igual do divisor;
     insere_fin(auxDividendo, elementoDividendo->info);
     elementoDividendo = elementoDividendo->prox;
   }
-  respCmp = verifica_maior(divisor, auxDividendo);
-  if(respCmp == -1){
+  respCmp = verifica_maior(divisor, auxDividendo); // se ainda assim o auxdividendo for menor que o divisor inserir o próximo numero de dividendo nele
+  if(respCmp == 1){
     insere_fin(auxDividendo, elementoDividendo->info);
     elementoDividendo = elementoDividendo->prox;
   }
   int proxDigitoQuociente;
   long unsigned int tamDoDivisor = divisor->tam;
-  if(dividendo->sinal != divisor->sinal) quociente->sinal = -1;
+  if(dividendo->sinal != divisor->sinal) quociente->sinal = -1; // da o sinal do quociente
   else quociente->sinal = 1;
-  imprime(divisor);
-  imprime(dividendo);
-  imprime(auxDividendo);
-  while(dividendo->tam > tamDoDivisor){
+  while(dividendo->tam >= tamDoDivisor){ 
     proxDigitoQuociente = 0;
     respCmp = verifica_maior(auxDividendo, divisor);
-    while(respCmp == -1){
-      printf("no começo do loop auxDividendo é: ");
-      imprime(auxDividendo);
-      printf("O tamanho de auxdividendo é %ld \n", auxDividendo->tam);
-      lista* auxDividendoTemp = inicializa();
+    while(respCmp != -1){ //enquanto o auxiliar divisor for maior ou igual ao divisor...
+      lista* auxDividendoTemp = inicializa(); //auxDividendotemp vai carregar o que auxDividendo faz
       auxDividendoTemp = copia_e_remove_elementos_original(auxDividendo);
-      printf("auxdividendotemp é: ");
-      imprime(auxDividendoTemp);
-      conserta_dif_de_tam(auxDividendoTemp, divisor);
+      conserta_dif_de_tam(auxDividendoTemp, divisor); //para subtrair divisor de auxDividendotemp deve-se igualar seus tamanhos
       subtrai(auxDividendoTemp, divisor, auxDividendo);
-      proxDigitoQuociente++;
-      libera(auxDividendoTemp);
-      elemento *elementoAuxDividendo = auxDividendo->prim;
-      while(elementoAuxDividendo->info == 0){ //retira os zeros a esquerda do menor
-        retira(auxDividendo, 0);
-        elementoAuxDividendo = elementoAuxDividendo->prox;
-      }
-      printf("auxdividendo: ");
-      imprime(auxDividendo);
-      printf("O tamanho de auxdividendo é %ld \n", auxDividendo->tam);
-      respCmp = verifica_maior(auxDividendo, divisor);
-      printf("O tamanho de auxdividendo é %ld \n", auxDividendo->tam);
-      printf("no fim do loop auxdividendo é: ");
-      imprime(auxDividendo);
+      retira_zeros_esquerda(divisor);
+      libera(auxDividendoTemp);//auxdividendoTemp já carregou a informação de dividendotemp e subtraiu portanto podemos já retira-lo
+      retira_zeros_esquerda(auxDividendo);
+      respCmp = verifica_maior(auxDividendo, divisor); //compara se ainda o auxiliar é maior ou igual ao divisor
+      proxDigitoQuociente++; 
     }
-    insere_ini(quociente, proxDigitoQuociente);
+    insere_fin(quociente, proxDigitoQuociente);
     tamDoDivisor++;
-    insere_fin(auxDividendo, elementoDividendo->info);
-    elementoDividendo = elementoDividendo->prox;
+    if (elementoDividendo){
+      insere_fin(auxDividendo, elementoDividendo->info);
+      elementoDividendo = elementoDividendo->prox;
+    }
   }
   return quociente;
 }

@@ -20,7 +20,7 @@ int main(void){
         imprime(l1);
         printf("O segundo número é ");
         imprime(l2);
-        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, * para multiplicar, / para dividir e \e[31;1ms\e[m para sair: ");
+        printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, \e[33;1m*\e[m para multiplicar, \e[33;1m/\e[m para dividir e \e[31;1ms\e[m para sair: ");
         char op;
         scanf(" %c", &op);
         printf("\ec");
@@ -40,9 +40,13 @@ int main(void){
             imprime(l3);
         }
         else if(op == '/'){
+            if(l2->tam == 1 && l2->prim->info == 0){
+                printf("esta divisão não pode ser realizada \n");
+            }else{
             l3 = inicia_divisao(l1, l2);
             printf("O resultado é: ");
             imprime(l3);
+            }
         }
         else if(op=='S' || op=='s'){
             calculadora = 0;
