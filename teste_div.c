@@ -30,7 +30,7 @@ int main(void)
         }
         quociente = quociente * 10 + i;
         divisorLength= i + 1;
-        auxDiv = auxDiv * 10 + floor(dividendo/10^(dividendoLength - divisorLength)) - floor(dividendo/10^(dividendoLength - divisorLength + 1))*10;
+        //auxDiv = auxDiv * 10 + floor(dividendo/10^(dividendoLength - divisorLength)) - floor(dividendo/10^(dividendoLength - divisorLength + 1))*10;
     printf("valor atual do quociente: %i\n", quociente);
     }
     printf("Quociente final: %d\n", quociente);

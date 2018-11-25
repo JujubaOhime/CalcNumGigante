@@ -329,3 +329,34 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
   else soma_total->sinal = 1;
   return soma_total;
 }
+
+lista *inicia_divisao(lista *l1, lista *l2)
+{
+  lista *quociente = inicializa();
+  lista *auxDividendo = inicializa();
+  unsigned long int contador;
+  unsigned long int tam_divisor = l2->tam;
+  for(contador = 0; contador < tam_divisor; contador++)
+  {
+    int primDigDividendo = l1->prim->info;
+    insere_fin(auxDividendo, primDigDividendo);
+    retira(l1, 0);
+  }
+  unsigned long int tam_dividendo = l1->tam;
+  while (tam_dividendo>0)
+  {
+    int proxDigitoQuociente = 0;
+    while (!(verifica_maior(auxDividendo, l2)))
+    {
+      subtrai(auxDividendo, l2, auxDividendo);
+      proxDigitoQuociente = proxDigitoQuociente + 1;
+    }
+    insere_fin(quociente, proxDigitoQuociente);
+    int primDigDividendo = l1->prim->info;
+    insere_fin(auxDividendo, primDigDividendo);
+    retira(l1, 0);
+    unsigned long int tam_dividendo = l1->tam;
+    libera(auxDividendo);
+  }
+  return quociente;
+}
