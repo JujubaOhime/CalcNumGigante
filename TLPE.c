@@ -332,33 +332,58 @@ lista *inicia_multiplicacao(lista *l1, lista *l2){
 
 lista *inicia_divisao(lista *dividendo, lista *divisor)
 {
-  lista *quociente = inicializa();
-  lista *auxDividendo = inicializa();
-  unsigned long int contador;
-  unsigned long int tam_divisor = divisor->tam;
-  for(contador = 0; contador < tam_divisor; contador++)
+  if (verifica_maior(divisor, dividendo))
   {
-    int primDigDividendo = dividendo->prim->info;
-    insere_fin(auxDividendo, primDigDividendo);
-    retira(dividendo, 0);
-  }
-  imprime(auxDividendo);
-  imprime(dividendo);
-  unsigned long int tam_dividendo = dividendo->tam;
-  while (tam_dividendo>0)
-  {
-    int proxDigitoQuociente = 0;
-    while (!(verifica_maior(auxDividendo, divisor)))
+    lista *quociente = inicializa();
+    printf("1\n");
+    lista *auxDividendo = inicializa();
+    printf("2\n");
+    unsigned long int contador;
+    printf("4\n");
+    for(contador = 0; contador < divisor->tam; contador++)
     {
-      subtrai(auxDividendo, divisor, auxDividendo);
-      proxDigitoQuociente = proxDigitoQuociente + 1;
+      printf("5\n");
+      int primDigDividendo = dividendo->prim->info;
+      printf("6\n");
+      insere_fin(auxDividendo, primDigDividendo);
+      printf("7\n");
+      retira(dividendo, dividendo->prim->info);
+      printf("8\n");
     }
-    insere_fin(quociente, proxDigitoQuociente);
-    int primDigDividendo = dividendo->prim->info;
-    insere_fin(auxDividendo, primDigDividendo);
-    retira(dividendo, 0);
-    unsigned long int tam_dividendo = dividendo->tam;
-    libera(auxDividendo);
+    imprime(auxDividendo);
+    printf("9\n");
+    imprime(dividendo);
+    printf("11\n");
+    while (dividendo->tam>0)
+    {
+      int proxDigitoQuociente = 0;
+      printf("12\n");
+      conserta_dif_de_tam(auxDividendo, divisor);
+      while (!(verifica_maior(auxDividendo, divisor)))
+      {
+        printf("12.5\n");
+        imprime(auxDividendo);
+        imprime(divisor);
+        subtrai(auxDividendo, divisor, auxDividendo);
+        printf("13\n");
+        proxDigitoQuociente = proxDigitoQuociente + 1;
+        printf("14\n");
+      }
+      insere_fin(quociente, proxDigitoQuociente);
+      printf("15\n");
+      printf("16\n");
+      insere_fin(auxDividendo, dividendo->prim->info);
+      printf("17\n");
+      retira(dividendo, dividendo->prim->info);
+      printf("18\n");
+      printf("19\n");
+      imprime(auxDividendo);
+      imprime(dividendo);
+      imprime(divisor);
+      imprime(quociente);
+      libera(auxDividendo);
+      printf("%ld\n", dividendo->tam);
+    }
+    return quociente;
   }
-  return quociente;
 }
