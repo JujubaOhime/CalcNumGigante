@@ -259,7 +259,7 @@ void pega_elemento(lista *l, FILE *file){
   while (str != '\n')
   {
       int temp = str - '0';
-      insere_fin(l, temp);
+      if (temp <= 9 && temp >= 0) insere_fin(l, temp);
       str = getc(file);
   }
 }
