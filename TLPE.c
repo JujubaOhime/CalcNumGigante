@@ -378,7 +378,7 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
   imprime(divisor);
   printf("respcmp é: %d \n", respCmp);
   respCmp = verifica_maior(auxDividendo, divisor);
-  while(respCmp != -1){
+  while(dividendo->tam >= 0){
     printf("O tamanho do dividendo é: %ld \n", dividendo->tam);
     proxDigitoQuociente = 0;
     while(respCmp != -1){ //enquanto o auxiliar divisor for maior ou igual ao divisor...
@@ -406,7 +406,6 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
     retira(dividendo, elementoDividendo->info);
     elementoDividendo = dividendo->prim;
     respCmp = verifica_maior(auxDividendo, divisor);
-    printf("o quociente é: "); imprime(quociente);
     printf("fim do loop \n");
   }
   return quociente;
