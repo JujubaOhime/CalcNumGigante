@@ -6,4 +6,3 @@ run:
 	$(compilador) $(codigo_fonte) -o $(nome_executavel)
 	@ echo "\033c\n"
 	@ ./$(nome_executavel)
-	@ echo "\033c\n"

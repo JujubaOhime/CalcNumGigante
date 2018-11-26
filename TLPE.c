@@ -9,7 +9,6 @@ void insere_ini(lista *l, int elem){
   if (l->prim == NULL) l->ultimo = novo;
   if (l->tam >= 2) l->prim->ant = novo;
   l->prim = novo;
-//  if(l) l->ant = novo;
 } 
 
 void insere_fin(lista *l, int elem){
@@ -193,7 +192,6 @@ lista *inicia_multiplicacao_ineficiente(lista *base_soma, lista *qtd_somas){
     base_soma = qtd_somas;
     qtd_somas = aux;
   }
-  //imprime(qtd_somas);
   elemento *p2 = qtd_somas->prim;
   while(p2->info == 0){
     retira(qtd_somas, 0);
@@ -374,12 +372,8 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
   if(dividendo->sinal != divisor->sinal) quociente->sinal = -1; // da o sinal do quociente
   else quociente->sinal = 1;
   long unsigned int tamDoDivisor = divisor->tam;
-  imprime(auxDividendo);
-  imprime(divisor);
-  printf("respcmp é: %d \n", respCmp);
   respCmp = verifica_maior(auxDividendo, divisor);
   while(dividendo->tam >= 0){
-    printf("O tamanho do dividendo é: %ld \n", dividendo->tam);
     proxDigitoQuociente = 0;
     while(respCmp != -1){ //enquanto o auxiliar divisor for maior ou igual ao divisor...
       retira_zeros_esquerda(auxDividendo);
@@ -394,19 +388,12 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
       respCmp = verifica_maior(auxDividendo, divisor); //compara se ainda o auxiliar é maior ou igual ao divisor
       proxDigitoQuociente++; 
     }
-    printf("auxdividendo depois da subtração é: ");imprime(auxDividendo);
-    printf("O próximo número a ser inserido é: %d \n ", proxDigitoQuociente);
     insere_fin(quociente, proxDigitoQuociente);
-    printf("O quociente é: ");imprime(quociente);
-    printf("O dividendo é: ");imprime(dividendo);
     if(dividendo->tam == 0)return quociente;
     insere_fin(auxDividendo, elementoDividendo->info);
-    printf("entrou aqui \n");
-    printf("o auxdividendo depois de inserido é: "); imprime(auxDividendo);
     retira(dividendo, elementoDividendo->info);
     elementoDividendo = dividendo->prim;
     respCmp = verifica_maior(auxDividendo, divisor);
-    printf("fim do loop \n");
   }
   return quociente;
 }
