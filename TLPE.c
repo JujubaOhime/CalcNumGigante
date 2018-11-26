@@ -356,20 +356,26 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
   lista *auxDividendo = inicializa(); 
   for(i=0; i<divisor->tam; i++){ // pega o auxdividendo de tamanho igual do divisor;
     insere_fin(auxDividendo, elementoDividendo->info);
-    elementoDividendo = elementoDividendo->prox;
+    retira(dividendo, elementoDividendo->info);
+    elementoDividendo = dividendo->prim;
   }
-  respCmp = verifica_maior(divisor, auxDividendo); // se ainda assim o auxdividendo for menor que o divisor inserir o próximo numero de dividendo nele
-  if(respCmp == 1){
+  respCmp = verifica_maior(auxDividendo, divisor); // se ainda assim o auxdividendo for menor que o divisor inserir o próximo numero de dividendo nele
+  if(respCmp == -1){
     insere_fin(auxDividendo, elementoDividendo->info);
-    elementoDividendo = elementoDividendo->prox;
+    retira(dividendo, elementoDividendo->info);
+    elementoDividendo = dividendo->prim;
   }
   int proxDigitoQuociente;
-  long unsigned int tamDoDivisor = divisor->tam;
   if(dividendo->sinal != divisor->sinal) quociente->sinal = -1; // da o sinal do quociente
   else quociente->sinal = 1;
-  while(dividendo->tam >= tamDoDivisor){ 
+  long unsigned int tamDoDivisor = divisor->tam;
+  imprime(auxDividendo);
+  imprime(divisor);
+  printf("respcmp é: %d \n", respCmp);
+  respCmp = verifica_maior(auxDividendo, divisor);
+  while(respCmp == 1){
+    printf("O tamanho do dividendo é: %ld \n", dividendo->tam);
     proxDigitoQuociente = 0;
-    respCmp = verifica_maior(auxDividendo, divisor);
     while(respCmp != -1){ //enquanto o auxiliar divisor for maior ou igual ao divisor...
       lista* auxDividendoTemp = inicializa(); //auxDividendotemp vai carregar o que auxDividendo faz
       auxDividendoTemp = copia_e_remove_elementos_original(auxDividendo);
@@ -381,12 +387,25 @@ lista *inicia_divisao(lista *dividendo, lista *divisor){
       respCmp = verifica_maior(auxDividendo, divisor); //compara se ainda o auxiliar é maior ou igual ao divisor
       proxDigitoQuociente++; 
     }
+    //if (tamDoDivisor == dividendo->tam){ // se o tamdivisor acrescentado for igual o do dividendo (isto é, não tem mais número para baixar)
+      //e o auxiliar de dividendo for menor que o divisor não vai inserir mais nenhum número no quociente e retorna o quociente
+    //  if(respCmp != -1) return quociente;
+    //}
+
+    printf("auxdividendo é: ");imprime(auxDividendo);
+    printf("O próximo número a ser inserido é: %d \n ", proxDigitoQuociente);
+    printf("entrou \n");
     insere_fin(quociente, proxDigitoQuociente);
-    tamDoDivisor++;
-    if (elementoDividendo){
-      insere_fin(auxDividendo, elementoDividendo->info);
-      elementoDividendo = elementoDividendo->prox;
-    }
+    imprime(quociente);
+    imprime(dividendo);
+    if(dividendo->tam == 0)return quociente;
+    insere_fin(auxDividendo, elementoDividendo->info);
+    printf("entrou aqui \n");
+    imprime(auxDividendo);
+    retira(dividendo, elementoDividendo->info);
+    elementoDividendo = dividendo->prim;
+    respCmp = verifica_maior(auxDividendo, divisor);
+    printf("o quociente é: "); imprime(quociente);
   }
   return quociente;
 }

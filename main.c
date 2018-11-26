@@ -6,6 +6,8 @@ int main(void){
     int calculadora = 1;
     FILE *file;
     while (calculadora){
+        printf("\e[34;1;2mBem-vindo à Calculadora de Números IN FI NI TOS!\e[m\n\n");
+
         file = fopen("leitura.txt", "r");
         if (file == NULL){
             printf("Arquivo não pode ser aberto \n");
@@ -23,7 +25,7 @@ int main(void){
         printf("Escreva \e[33;1m+\e[m para somar, \e[33;1m-\e[m para diminuir, \e[33;1m*\e[m para multiplicar, \e[33;1m/\e[m para dividir e \e[31;1ms\e[m para sair: ");
         char op;
         scanf(" %c", &op);
-        printf("\ec");
+        //printf("\ec");
         if (op == '+'){
             l3 = inicia_soma(l1, l2);
             printf("O resultado é: ");
